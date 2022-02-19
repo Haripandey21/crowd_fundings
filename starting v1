@@ -1,0 +1,40 @@
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.7.0 < 0.9.0;
+
+contract CrowdFund
+{
+    mapping(address=>uint) public contributors;
+    address public manager;
+    uint public mincontribution;
+    uint public deadline;
+    uint public target;
+    uint public raisedamount;
+    uint public noofcontributors;
+
+constructor(uint _target,uint _deadline)
+{
+    target=_target;
+    deadline=block.timestamp+_deadline;
+    manager=msg.sender;
+    mincontribution=100 wei;
+}
+function sendeth() public payable 
+{
+require(block.timestamp<deadline,"deadline crosssed");
+require(msg.value>=mincontribution,"must be >than min contribution ");
+
+if(contributors[msg.sender]==0)
+{
+    noofcontributors++;
+}
+contributors[msg.sender]+=msg.value;      // 0+100 ; 
+raisedamount+=msg.value;
+}
+
+function getblc() public view returns(uint)
+{
+return address(this).balance;
+}
+
+}
+ 
